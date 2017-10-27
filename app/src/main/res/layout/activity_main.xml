@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/BateryTargetLevel"
+                android:id="@+id/BateryTargetLevelLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -40,14 +40,16 @@
                 tools:layout_editor_absoluteY="18dp">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/BateryTargetLevel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Target battery (%)"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:text="90" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/BateryChargeSpeed"
+                android:id="@+id/BateryChargeSpeedLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -57,10 +59,12 @@
                 tools:layout_editor_absoluteY="18dp">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/BateryChargeSpeed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Battery Charge Speed (%/h)"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"
+                    android:text="30" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
