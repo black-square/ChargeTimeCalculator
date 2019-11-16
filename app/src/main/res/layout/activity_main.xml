@@ -6,84 +6,186 @@
     android:layout_height="match_parent"
     tools:context="io.github.black_square.chargetimecalculator.MainActivity">
 
-    <LinearLayout
-        android:id="@+id/LLH"
+    <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent">>
 
         <LinearLayout
-            android:id="@+id/LLV"
+            android:id="@+id/LLH"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/BateryTargetLevelLayout"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/LLV"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="start"
-                android:orientation="horizontal"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="18dp">
+                android:baselineAligned="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/BateryTargetLevel"
-                    android:layout_width="match_parent"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/BatteryTargetLevelLayout"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="Target battery (%)"
-                    android:inputType="number"
-                    android:text="90" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:orientation="horizontal"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="18dp">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/BateryChargeSpeedLayout"
-                android:layout_width="0dp"
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/BatteryTargetLevel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Target level (%)"
+                        android:inputType="number"
+                        android:text="90" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/BatteryChargeSpeedLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:orientation="horizontal"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="18dp">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/BatteryChargeSpeed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Charge Speed (%/h)"
+                        android:inputType="numberDecimal"
+                        android:text="30" />
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/ResultTime"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:orientation="horizontal"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="18dp">
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+                android:textStyle="bold" />
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/BateryChargeSpeed"
-                    android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/Duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <LinearLayout
+                android:id="@+id/LLV2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/BatteryCurrentLevelLayout2"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="Battery Charge Speed (%/h)"
-                    android:inputType="numberDecimal"
-                    android:text="30" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:orientation="horizontal"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="18dp">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/BatteryCurrentLevel2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Curr Level (%)"
+                        android:inputType="number"
+                        android:text="90" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/BatteryTargetLevelLayout2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:orientation="horizontal"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="18dp">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/BatteryTargetLevel2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Target Level (%)"
+                        android:inputType="number"
+                        android:text="90" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/BatteryChargeSpeedLayout2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:orientation="horizontal"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="18dp">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/BatteryChargeSpeed2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Speed (%/h)"
+                        android:inputType="numberDecimal"
+                        android:text="30" />
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/resultTime2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/duration2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/ResultTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display3"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/Duration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-    </LinearLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion var
     defaultConfig {
         applicationId "io.github.black_square.chargetimecalculator"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion var
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -16,6 +16,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildToolsVersion = var2
 }
 
 dependencies {

@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
         mResultTime = findViewById(R.id.ResultTime);
         mDuration = findViewById(R.id.Duration);
-        mBatteryTargetLevel = findViewById(R.id.BateryTargetLevel);
-        mBatteryChargeSpeed = findViewById(R.id.BateryChargeSpeed);
+        mBatteryTargetLevel = findViewById(R.id.BatteryTargetLevel);
+        mBatteryChargeSpeed = findViewById(R.id.BatteryChargeSpeed);
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         mBatteryTargetLevel.setText( settings.getString(BatteryTargetLevel, "70" ));
