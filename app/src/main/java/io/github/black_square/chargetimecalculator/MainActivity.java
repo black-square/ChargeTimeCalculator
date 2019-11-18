@@ -21,12 +21,21 @@ public class MainActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "MyPrefsFile";
     public static final String BatteryTargetLevel = "BatteryTargetLevel";
     public static final String BatteryChargeSpeed = "BatteryChargeSpeed";
+    public static final String BatteryCurrentLevel2 = "BatteryCurrentLevel2";
+    public static final String BatteryTargetLevel2 = "BatteryTargetLevel2";
+    public static final String BatteryChargeSpeed2 = "BatteryChargeSpeed2";
 
     private Timer mUpdateTimer;
     private TextView mResultTime;
     private TextView mDuration;
     private TextInputEditText mBatteryTargetLevel;
     private TextInputEditText mBatteryChargeSpeed;
+
+    private TextView mResultTime2;
+    private TextView mDuration2;
+    private TextInputEditText mBatteryCurrentLevel2;
+    private TextInputEditText mBatteryTargetLevel2;
+    private TextInputEditText mBatteryChargeSpeed2;
 
 
     @Override
@@ -39,11 +48,20 @@ public class MainActivity extends AppCompatActivity {
         mBatteryTargetLevel = findViewById(R.id.BatteryTargetLevel);
         mBatteryChargeSpeed = findViewById(R.id.BatteryChargeSpeed);
 
+        mResultTime2 = findViewById(R.id.ResultTime2);
+        mDuration2 = findViewById(R.id.Duration2);
+        mBatteryCurrentLevel2 = findViewById(R.id.BatteryCurrentLevel2);
+        mBatteryTargetLevel2 = findViewById(R.id.BatteryTargetLevel2);
+        mBatteryChargeSpeed2 = findViewById(R.id.BatteryChargeSpeed2);
+
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         mBatteryTargetLevel.setText( settings.getString(BatteryTargetLevel, "70" ));
         mBatteryChargeSpeed.setText( settings.getString(BatteryChargeSpeed, "30" ));
+        mBatteryCurrentLevel2.setText( settings.getString(BatteryCurrentLevel2, "42" ));
+        mBatteryTargetLevel2.setText( settings.getString(BatteryTargetLevel2, "70" ));
+        mBatteryChargeSpeed2.setText( settings.getString(BatteryChargeSpeed2, "30" ));
 
-        mBatteryTargetLevel.addTextChangedListener(new TextWatcher() {
+        TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
@@ -56,22 +74,13 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 update();
             }
-        });
+        };
 
-        mBatteryChargeSpeed.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                update();
-            }
-        });
+        mBatteryTargetLevel.addTextChangedListener(textWatcher);
+        mBatteryChargeSpeed.addTextChangedListener(textWatcher);
+        mBatteryCurrentLevel2.addTextChangedListener(textWatcher);
+        mBatteryTargetLevel2.addTextChangedListener(textWatcher);
+        mBatteryChargeSpeed2.addTextChangedListener(textWatcher);
 
         mUpdateTimer = new Timer();
         mUpdateTimer.schedule(new TimerTask() {
@@ -93,15 +102,17 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(BatteryTargetLevel, mBatteryTargetLevel.getText().toString());
         editor.putString(BatteryChargeSpeed, mBatteryChargeSpeed.getText().toString());
+        editor.putString(BatteryCurrentLevel2, mBatteryCurrentLevel2.getText().toString());
+        editor.putString(BatteryTargetLevel2, mBatteryTargetLevel2.getText().toString());
+        editor.putString(BatteryChargeSpeed2, mBatteryChargeSpeed2.getText().toString());
 
         editor.commit();
     }
 
-
     private float currentBatteryLevel() {
         //https://stackoverflow.com/a/15746919/3415353
-        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent batteryStatus = registerReceiver(null, ifilter);
+        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = registerReceiver(null, intentFilter);
 
         int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
@@ -109,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         return level / (float)scale * 100;
     }
 
-    public String formatDifference(Date startDate, Date endDate) {
+    private static String formatDifference(Date startDate, Date endDate) {
         //milliseconds
         long different = endDate.getTime() - startDate.getTime();
 
@@ -133,12 +144,19 @@ public class MainActivity extends AppCompatActivity {
                 "%d days, %d hours, %d minutes, %d seconds",
                 elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
     }
-    private void update() {
 
+    private interface FloatSupplier {
+        float getAsFloat();
+    }
+
+    private static void updateImpl(FloatSupplier fsCurrentLevel, TextView tvTargetLevel,
+                                   TextView tvChargeSpeed, TextView tvResultTime,
+                                   TextView tvDuration)
+    {
         try {
-            float targetLevel = Float.parseFloat(mBatteryTargetLevel.getText().toString());
-            float chargeSpeed = Float.parseFloat(mBatteryChargeSpeed.getText().toString());
-            float curLevel = currentBatteryLevel();
+            float curLevel = fsCurrentLevel.getAsFloat();
+            float targetLevel = Float.parseFloat(tvTargetLevel.getText().toString());
+            float chargeSpeed = Float.parseFloat(tvChargeSpeed.getText().toString());
 
             if (curLevel >= targetLevel) {
                 throw new Exception("Charged");
@@ -154,13 +172,21 @@ public class MainActivity extends AppCompatActivity {
             SimpleDateFormat df = new SimpleDateFormat("h:mm a");
             String formattedDate = df.format(c.getTime());
 
-            mResultTime.setText(formattedDate);
-            mDuration.setText(formatDifference(curTime, c.getTime()));
+            tvResultTime.setText(formattedDate);
+            tvDuration.setText(formatDifference(curTime, c.getTime()));
         }
         catch(Exception e)
         {
-            mResultTime.setText("-----");
-            mDuration.setText(e.getMessage());
+            tvResultTime.setText("-----");
+            tvDuration.setText(e.getMessage());
         }
+    }
+
+    private void update() {
+        updateImpl(() -> currentBatteryLevel(), mBatteryTargetLevel,
+                mBatteryChargeSpeed, mResultTime, mDuration);
+
+        updateImpl(() -> Float.parseFloat(mBatteryCurrentLevel2.getText().toString()),
+                mBatteryTargetLevel2, mBatteryChargeSpeed2, mResultTime2, mDuration2);
     }
 }

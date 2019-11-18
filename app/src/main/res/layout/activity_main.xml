@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display2"
                 android:textStyle="bold" />
 
             <TextView
@@ -169,7 +169,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/resultTime2"
+                android:id="@+id/ResultTime2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
@@ -178,7 +178,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/duration2"
+                android:id="@+id/Duration2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
